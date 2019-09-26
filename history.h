@@ -1,0 +1,1 @@
+int history(char*);
