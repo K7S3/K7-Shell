@@ -14,8 +14,9 @@
 
 #include "main.h"
 #include "do.h"
+
 extern int child_pid[100];
-extern char* child_name[100];
+extern char *child_name[100];
 extern int pid_no;
 extern int foreground[100];
 extern int fg_pid;
@@ -25,8 +26,10 @@ size_t file_size = 256;
 
 int main()
 {
+
     main_id = getpid();
     // The main pid of the program
+    printf("%d", main_id);
     create_shell();
     return 0;
 }
@@ -61,17 +64,17 @@ void create_shell()
         command = readline(display_line);
         // printf("%s", command);
 
-            add_history(command);
+        add_history(command);
         while ((token = strtok_r(command, ";", &command)))
         {
-           
+
             if (!(strcmp(token, "quit")))
             {
                 perror("Shell Terminated");
                 exit(0);
                 return;
             }
-          
+
             if (do_it(token, home_dir) == 1)
             {
 
@@ -84,11 +87,19 @@ void create_shell()
 }
 void control_c(int sig_no)
 {
-    cur_pid = foreground[pid_no];
-    if(cur_pid != -2) {
-        kill(cur_pid, SIGINT);
-    }
+    // cur_pid = foreground[pid_no];
+    // printf("%d\n", getpid());
+    // if (getpid() != main_id)
+    //     return;
+    // if(cur_pid != -2) {
+ 
+    //     kill(cur_pid, SIGINT);
+    //     return ;
+    // }
+    
+    // fprintf(stderr, "\n");
     signal(SIGINT, control_c);
+    
 }
 void control_z(int sig_no)
 {
@@ -100,15 +111,15 @@ void handle_child(int sig_no)
     {
         int status3;
         pid_t return_pid = waitpid(child_pid[i], &status3, WNOHANG);
-        
+
         if (return_pid == 0)
         {
             /* child is still running */
             continue;
         }
-        else if (return_pid == child_pid[i-1])
+        else if (return_pid == child_pid[i - 1])
         {
-            printf("\nProcess %s with pid %d finished normally\n", child_name[i-1], return_pid);
+            printf("\nProcess %s with pid %d finished normally\n", child_name[i - 1], return_pid);
             /* child is finished */
         }
     }

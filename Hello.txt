@@ -1,12 +1,8 @@
-a
-ad
-ad
-ad
-da
-khdkahdk
-a
-ad
-ad
-ad
-da
-khdkahdk
+0a1,6
+> khdkahdk
+> ad
+> ad
+> ad
+> a
+> da
+\ No newline at end of file
