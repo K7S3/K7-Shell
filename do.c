@@ -16,6 +16,7 @@
 #include "nightswatch.h"
 #include "env.h"
 #include "jobs.h"
+#include "cronjob.h"
 
 int child_pid[100];
 char *child_name[100];
@@ -142,7 +143,12 @@ int built_in(char *cmd, char *home_dir)
         overkill();
         return 0;
     }
-
+    else if(strcmp("cronjob", command)==0) {
+        char *arguments = (char *)malloc(256 * sizeof(char));
+        arguments = strtok(NULL, "\n");
+        cronjob(arguments, home_dir);
+        return 0;
+    }
     else
     {
         return 1;

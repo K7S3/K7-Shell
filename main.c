@@ -107,6 +107,7 @@ void control_c(int sig_no)
 }
 void control_z(int sig_no)
 {
+    printf("\nStopping %d\n", cur_pid);
     if(main_id != getpid())
         return;
     if (cur_pid != -1)
