@@ -6,3 +6,14 @@
 > a
 > da
 \ No newline at end of file
+9
+0a1,6
+> khdkahdk
+> ad
+> ad
+> ad
+> a
+> da
+\ No newline at end of file
+9
+Process cat Completed 0

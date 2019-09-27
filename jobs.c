@@ -61,7 +61,8 @@ int kjob(char *arguments)
     else
     {
         int id = atoi(args[0]);
-
+        if(id == 0)
+            perror("Cannot kill main process"); return 1;
         int signal_number = atoi(args[1]);
         kill(child_pid[id - 1], signal_number);
     }
@@ -110,5 +111,6 @@ int fg(char *arguments)
             printf("No bg process for %d", id);
             return 1;
         }
+
     }
 }

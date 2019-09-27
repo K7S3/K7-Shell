@@ -7,7 +7,7 @@ int setenvar(char *arguments)
 {
 
     char **args = ksh_split_line(arguments);
-    puts(args[0]);
+    // puts(args[0]);
     if(args[2]){
         perror("More than 2 arguments for Setenv");
     }
@@ -18,7 +18,7 @@ int setenvar(char *arguments)
         else
         {
             setenv(args[0], args[1], 1);
-            puts(getenv(args[0]));
+            // puts(getenv(args[0]));
         }
     }
     else {

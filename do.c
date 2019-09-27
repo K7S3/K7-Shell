@@ -333,7 +333,7 @@ int do_it(char *cmd, char *home_dir)
     {
         char *arguments = (char *)malloc(256 * sizeof(char));
         arguments = strtok(NULL, "\n");
-        puts(arguments);
+        // puts(arguments);
         setenvar(arguments);
 
         return 0;
