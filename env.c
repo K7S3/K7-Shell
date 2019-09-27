@@ -9,7 +9,7 @@ int setenvar(char *arguments)
     char **args = ksh_split_line(arguments);
     puts(args[0]);
     if(args[2]){
-        perror("More than arguments for Setenvar");
+        perror("More than 2 arguments for Setenv");
     }
     if (arguments)
     {
@@ -22,7 +22,7 @@ int setenvar(char *arguments)
         }
     }
     else {
-        perror("Setenvar: No arguments");
+        perror("Setenv: No arguments");
         return 1;
     }
     return 0;

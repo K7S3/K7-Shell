@@ -17,6 +17,7 @@
 
 extern int child_pid[100];
 extern char *child_name[100];
+extern char *child_status[100];
 extern int pid_no;
 extern int foreground[100];
 extern int fg_pid;
@@ -29,7 +30,7 @@ int main()
 
     main_id = getpid();
     // The main pid of the program
-    printf("%d", main_id);
+    // printf("%d", main_id);
     create_shell();
     return 0;
 }
@@ -63,7 +64,7 @@ void create_shell()
         sprintf(display_line, "\033[1;31m<%s@%s\033[0m:\033[1;36m%s\033[0m>", user_name, host_name, rel_path(cur_dir, home_dir));
         command = readline(display_line);
         // printf("%s", command);
-
+    // printf("%d", pid_no);
         add_history(command);
         while ((token = strtok_r(command, ";", &command)))
         {

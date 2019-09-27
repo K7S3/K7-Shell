@@ -180,7 +180,7 @@ int do_it(char *cmd, char *home_dir)
     char *cmd2 = (char *)malloc(200 * sizeof(char));
     strcpy(cmd2, cmd);
     char *cmd3 = (char *)malloc(200 * sizeof(char));
-        // strcpy(cmd3, pipe_parse[i]);
+    // strcpy(cmd3, pipe_parse[i]);
     strcpy(cmd3, cmd);
     int pos = 0;
 
@@ -194,6 +194,7 @@ int do_it(char *cmd, char *home_dir)
     pid_t piped_pid;
     char *command2 = (char *)malloc(256 * sizeof(char));
     command2 = strtok(cmd3, " ");
+    
     kshDELIM = " \r\t\n\a";
     if (strcmp("setenv", command2) == 0)
     {
@@ -201,6 +202,7 @@ int do_it(char *cmd, char *home_dir)
         arguments = strtok(NULL, "\n");
         puts(arguments);
         setenvar(arguments);
+
         return 0;
     }
     else if (strcmp("unsetenv", command2) == 0)
@@ -210,11 +212,11 @@ int do_it(char *cmd, char *home_dir)
         unsetenvar(arguments);
         return 0;
     }
-     else if (strcmp("jobs", command2) == 0)
-    {
-        jobs();
-        return 0;
-    }
+    // else if (strcmp("jobs", command2) == 0)
+    // {
+    //     jobs();
+    //     return 0;
+    // }
     for (int i = 0; pipe_parse[i] != NULL; i++)
     {
 
@@ -242,88 +244,91 @@ int do_it(char *cmd, char *home_dir)
 
             // else
             // {
-                shell_pid = fork(); // Fork the shell
+            shell_pid = fork(); // Fork the shell
 
-                if (shell_pid == 0) // Child Process
+            if (shell_pid == 0) // Child Process
+            {
+                
+             
+                if (input == 1) // If there is an input file redirector (<)
                 {
-                    if (input == 1) // If there is an input file redirector (<)
-                    {
-                        dup2(input_file, 0);
-                        close(input_file);
-                        input = 0;
-                    }
+                    dup2(input_file, 0);
+                    close(input_file);
+                    input = 0;
+                }
 
-                    if (output == 1) // If there is output file redirector (> or >>)
-                    {
-                        dup2(output_file, 1);
-                        close(output_file);
-                        output = 0;
-                    }
+                if (output == 1) // If there is output file redirector (> or >>)
+                {
+                    dup2(output_file, 1);
+                    close(output_file);
+                    output = 0;
+                }
 
-                    if (built_in(cmd2, home_dir) != 0) //If there is no builtin implementation.
+                if (built_in(cmd2, home_dir) != 0) //If there is no builtin implementation.
+                {
+                    // printf("%s\n%s\n", command, do_command[1]);
+                    int a = execvp(command, do_command); //Then use execvp
+                    if (a == -1)
                     {
-                        // printf("%s\n%s\n", command, do_command[1]);
-                        int a = execvp(command, do_command); //Then use execvp
-                        if (a == -1)
-                        {
-                            perror("Command does not exist");
-                            exit(0);
-                        }
-                    }
-                    else
-                    {
+                        perror("Command does not exist");
                         exit(0);
                     }
                 }
-                else if (0 > shell_pid) // Error forking the shell
+                else
                 {
-                    perror("Error forking k7_shell");
+                    exit(0);
                 }
-                else // Parent process
-                {
-                    command = strtok(cmd2, " ");
-                    if (ampersand_flag == 1) //Background process
-                    {
-                        child_name[pid_no] = command;
-                        child_pid[pid_no++] = shell_pid;
-                        printf("%d", pid_no);
-                        printf("Starting background process with id :%d\n", shell_pid);
-                    }
-                    else // Foreground Process
-                    {
-                        do
-                        {
-
-                            foreground[fg_pid++] = shell_pid;
-                            wait_pid = waitpid(shell_pid, &status, WUNTRACED); //wait for child process
-                            if (!WIFEXITED(status))
-                            {
-                                printf("Process %s Exited %d\n", command, status);
-                                child_status[wait_pid] = "Exited";
-                                fflush(stdout);
-                                break;
-                            }
-
-                            if (!WIFSIGNALED(status))
-                            {
-                                printf("Process %s Completed %d\n", command, status);
-                                child_status[wait_pid] = "Completed";
-                                fflush(stdout);
-                                break;
-                            }
-                            if (!WIFSTOPPED(status))
-                            {
-                                printf("Process %s Stopped %d\n", command, status);\
-                                child_status[wait_pid] = "Stopped";
-                                fflush(stdout);
-                                break;
-                            }
-
-                        } while (1);
-                    }
-                }
-                exit(2);
             }
+            else if (0 > shell_pid) // Error forking the shell
+            {
+                perror("Error forking k7_shell");
+            }
+            else // Parent process
+            {
+                command = strtok(cmd2, " ");
+                if (ampersand_flag == 1) //Background process
+                {
+                   
+                    child_name[pid_no] = command;
+                    child_pid[pid_no++] = shell_pid;
+                    printf("%d", pid_no);
+                    printf("Starting background process with id :%d\n", shell_pid);
+                }
+                else // Foreground Process
+                {
+                    do
+                    {
+
+                        foreground[fg_pid++] = shell_pid;
+                        wait_pid = waitpid(shell_pid, &status, WUNTRACED); //wait for child process
+                        if (!WIFEXITED(status))
+                        {
+                            printf("Process %s Exited %d\n", command, status);
+                            child_status[wait_pid] = "Exited";
+                            fflush(stdout);
+                            break;
+                        }
+
+                        if (!WIFSIGNALED(status))
+                        {
+                            printf("Process %s Completed %d\n", command, status);
+                            child_status[wait_pid] = "Completed";
+                            fflush(stdout);
+                            break;
+                        }
+                        if (!WIFSTOPPED(status))
+                        {
+                            printf("Process %s Stopped %d\n", command, status);
+                            child_status[wait_pid] = "Stopped";
+                            fflush(stdout);
+                            break;
+                        }
+
+                    } while (1);
+                }
+            }
+            exit(2);
+        }
         // }
         else
         {
