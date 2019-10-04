@@ -1,6 +1,6 @@
 # K7_SHELL
 
-Shell Written in C language.
+Shell Written in C language. The filenames correspond to each of the builtin feature.
 
 ## COMPILE
 ```make```

@@ -111,6 +111,9 @@ int fg(char *arguments)
             printf("No bg process for %d", id);
             return 1;
         }
+        kill(id, SIGCONT);
+        waitpid(-1, NULL, WUNTRACED);
+        remove_proc(id, 0);
 
     }
 }
