@@ -18,21 +18,23 @@ int cd(char *home_directory, char *new_directory)
     }
     else if ((strcmp(new_directory, "..")) == 0)
     {
-        if (strcmp(getcwd(current_directory, 256), home_directory) != 0)
-        {
-            for (int i = strlen(current_directory); i >= strlen(home_directory); i--)
-            {
-                if (current_directory[i] == '/')
-                {
-                    chdir("..");
-                    break;
-                }
-            }
-        }
-        else
-        {
-            return 0;
-        }
+        chdir("..");
+        getcwd(current_directory, 256);
+        // if (strcmp(getcwd(current_directory, 256), home_directory) != 0)
+        // {
+            // for (int i = strlen(current_directory); i >= strlen(home_directory); i--)
+            // {
+            //     if (current_directory[i] == '/')
+            //     {
+            //         chdir("..");
+            //         break;
+            //     }
+            // }
+        // }
+        // else
+        // {
+        //     return 0;
+        // }
     }
    
     else if (strcmp(new_directory, "~") == 0)

@@ -121,13 +121,13 @@ int ls(char *arguments)
                 // printf("fhao");
                 if (stat(list_of_files[i]->d_name, &dir_stat) == 0 && S_ISDIR(dir_stat.st_mode))
                 {
-                    printf("\033[1;34m %-*s\033[0m\t", max, list_of_files[i]->d_name);
+                    printf("\033[1;34m %-*s\033[0m\n", max, list_of_files[i]->d_name);
                     // printf("123\n");
                 }
                 else
                 {
                     // printf("jjj\n");
-                    printf("\033[1:32m %-*s\033[0m\t", max, list_of_files[i]->d_name);
+                    printf("\033[1:32m %-*s\033[0m\n", max, list_of_files[i]->d_name);
                 }
             }
         }
