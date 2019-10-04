@@ -9,7 +9,12 @@ int echo(char *str)
         for(int i=0;i<strlen(str);++i){
             str2[i] = str[i+1];
         }
+        if(getenv(str2)){
         printf("%s\n", getenv(str2));
+        }
+        else {
+            perror("Environment variable not found");
+        }
         free(str2);
         return 0;
     }
